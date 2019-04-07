@@ -3,6 +3,6 @@ Prove: If n is an even number, then 2n is an even number.
 Let n be an even number.
 By definition, n = 2k where k is an integer.
 Let m = 2n.
-By substitution, m = 2(2k)
+By substitution, m = 2(2k).
 Therefore, m is an even number.
 Therefore, 2n is an even number.

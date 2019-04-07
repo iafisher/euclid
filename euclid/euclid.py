@@ -1,2 +1,5 @@
+from .parser import parse
+
+
 def check_proof(proof):
-    pass
+    print(parse(proof))
