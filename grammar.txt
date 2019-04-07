@@ -1,0 +1,27 @@
+Example:
+	Prove: If n is an even number, then 2n is an even number.
+
+	Let n be an even number.
+	By definition, n = 2k where k is an integer.
+	Let m = 2n.
+	By substitution, m = 2(2k).
+	Therefore, m is an even number.
+	Therefore, 2n is an even number.
+
+
+proof := prove-clause clause+
+
+prove-clause := PROVE COLON formula DOT
+clause := let-clause | formula-clause | therefore-clause
+
+let-clause := LET SYMBOL BE A compound-symbol DOT | LET SYMBOL EQ term DOT
+formula-clause := (BY justification)? formula where?
+therefore-clause := THEREFORE formula DOT
+
+formula := term EQ term | term IS A compound-symbol
+term := SYMBOL | NUM | NUM SYMBOL | NUM LPAREN term RPAREN | LPAREN term RPAREN
+
+justification := DEFINITION | SUBSTITUTION
+where := WHERE SYMBOL IS A compound-symbol
+
+compound-symbol := SYMBOL+
