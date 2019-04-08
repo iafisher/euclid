@@ -1,20 +1,37 @@
 """
-proof := prove-clause clause+
+Parse a proof into an abstract syntax tree.
 
-prove-clause := PROVE COLON formula DOT
-clause := let-clause | formula-clause | therefore-clause
+The concrete grammar of the proof language is given below. It is intended to be similar
+in format to regular, English-language proofs.
 
-let-clause := LET SYMBOL BE A compound-symbol DOT | LET SYMBOL EQ term DOT
-formula-clause := (BY justification)? formula where? DOT
-therefore-clause := THEREFORE formula DOT
 
-formula := term OP term | term IS A compound-symbol | IF formula THEN formula
-term := SYMBOL | NUMBER | NUMBER SYMBOL | NUMBER LPAREN term RPAREN | LPAREN term RPAREN
+    proof := prove-clause clause*
 
-justification := DEFINITION | SUBSTITUTION
-where := WHERE SYMBOL IS A compound-symbol
+    prove-clause := PROVE COLON formula DOT
+    clause := let-clause | formula-clause | therefore-clause
 
-compound-symbol := SYMBOL+
+    let-clause := LET SYMBOL BE A compound-symbol DOT | LET SYMBOL EQ term DOT
+    formula-clause := (BY justification)? formula where? DOT
+    therefore-clause := THEREFORE formula DOT
+
+    formula := term OP term
+             | term IS A compound-symbol
+             | IF formula THEN formula
+
+    term := SYMBOL
+          | NUMBER
+          | NUMBER SYMBOL
+          | NUMBER LPAREN term RPAREN
+          | LPAREN term RPAREN
+
+    justification := DEFINITION | SUBSTITUTION
+    where := WHERE SYMBOL IS A compound-symbol
+
+    compound-symbol := SYMBOL+
+
+
+Author:  Ian Fisher (iafisher@protonmail.com)
+Version: April 2019
 """
 import re
 from collections import namedtuple
