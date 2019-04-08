@@ -5,8 +5,13 @@ Author:  Ian Fisher (iafisher@protonmail.com)
 Version: April 2019
 """
 import sys
+from collections import namedtuple
 
 from . import parser
+
+
+Knowledge = namedtuple("Knowledge", ["expressions"])
+Expression = namedtuple("Expression", ["properties", "equivalent"])
 
 
 def check_proof(proof):
@@ -39,7 +44,30 @@ def check_proof(proof):
                 "proven"
             )
 
+    knowledge = Knowledge([])
+    for clause in proof.clauses:
+        check_clause(knowledge, clause)
+
     print("No errors were detected in the proof.")
+
+
+def check_clause(knowledge, clause):
+    if isinstance(clause, parser.FormulaClauseNode):
+        if not follows(knowledge, clause.formula, clause.justification):
+            error(f"{clause} does not follow, line {parser.line(clause)})")
+    else:
+        error(f"unknown node type {clause.__class__.__name__}", prefix="Internal error")
+
+    update_knowledge(knowledge, clause)
+
+
+def update_knowledge(knowledge, clause):
+    pass
+
+
+def follows(knowledge, formula, justification=None):
+    """Return True if the truth of the formula follows from the given knowledge."""
+    return False
 
 
 def formula_equals(left, right):
@@ -47,7 +75,7 @@ def formula_equals(left, right):
     return left == right
 
 
-def error(msg):
+def error(msg, prefix="Error"):
     """Emit an error message and exit the entire program."""
-    sys.stderr.write("Error: " + msg + "\n")
+    sys.stderr.write(f"{prefix}: {msg}\n")
     sys.exit(2)

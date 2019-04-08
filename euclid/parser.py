@@ -294,3 +294,29 @@ def tokenize(code):
         elif kind == "MISMATCH":
             raise SyntaxError(f"{value!r} unexpected on line {lineno}, col {column}")
         yield Token(kind, value, lineno, column)
+
+
+def line(node):
+    """Return the line number of the node."""
+    if isinstance(node, LetNode):
+        return line(node.symbol)
+    elif isinstance(node, FormulaClauseNode):
+        return line(node.formula)
+    elif isinstance(node, ThereforeNode):
+        return line(node.formula)
+    elif isinstance(node, WhereNode):
+        return line(node.symbol)
+    elif isinstance(node, IfNode):
+        return line(node.hypothesis)
+    elif isinstance(node, OpNode):
+        return line(node.left)
+    elif isinstance(node, IsANode):
+        return line(node.term)
+    elif isinstance(node, CompoundSymbolNode):
+        return line(node.components[0])
+    elif isinstance(node, NumberNode):
+        return node.number.line
+    elif isinstance(node, SymbolNode):
+        return node.symbol.line
+    else:
+        raise RuntimeError(f"unknown node type {node.__class__.__name__}")
