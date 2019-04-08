@@ -11,11 +11,13 @@ from euclid.euclid import check_proof
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        sys.stderr.write("Usage: {} <proof-file>\n".format(sys.argv[0]))
+    if len(sys.argv) > 2:
+        sys.stderr.write("Usage:\n")
+        sys.stderr.write(f"  {sys.argv[0]}\n")
+        sys.stderr.write(f"  {sys.argv[0]} <proof-file>\n")
         sys.exit(1)
 
-    if sys.argv[1] == "-":
+    if len(sys.argv) == 1 or sys.argv[1] == "-":
         proof = sys.stdin.read()
         # Print an extra newline so that the program output is visually separate from
         # the user input.
